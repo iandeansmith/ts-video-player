@@ -1,0 +1,90 @@
+{
+	"movies": [
+		{
+			"id": 1,
+			"title": "Star Wars - A New Hope",
+			"thumbnail": "images/koalabear.jpg",
+			"poster": "images/newhope.jpg",
+			"video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+		},
+		{
+			"id": 2,
+			"title": "Star Wars - The Empire Strikes Back",
+			"thumbnail": "images/koalabear.jpg",
+			"poster": "images/empire.jpg",
+			"video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+		},
+		{
+			"id": 3,
+			"title": "Star Wars - Return of the Jedi",
+			"thumbnail": "images/koalabear.jpg",
+			"poster": "images/newhope.jpg",
+			"video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"
+
+		},
+		{
+			"id": 4,
+			"title": "Star Wars - The Phantom Menance",
+			"thumbnail": "images/koalabear.jpg",
+			"poster": "images/empire.jpg",
+			"video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+
+		},
+		{
+			"id": 5,
+			"title": "Star Wars - Attack of the Clones",
+			"thumbnail": "images/koalabear.jpg",
+			"poster": "images/newhope.jpg",
+			"video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+
+		},
+		{
+			"id": 6,
+			"title": "Star Wars - Revenge of the Sith",
+			"thumbnail": "images/koalabear.jpg",
+			"poster": "images/empire.jpg",
+			"video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+
+		},
+		{
+			"id": 7,
+			"title": "Star Wars - The Force Awakens",
+			"thumbnail": "images/koalabear.jpg",
+			"poster": "images/newhope.jpg",
+			"video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+
+		},
+		{
+			"id": 8,
+			"title": "Star Wars - The Last Jedi",
+			"thumbnail": "images/koalabear.jpg",
+			"poster": "images/empire.jpg",
+			"video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+
+		},
+		{
+			"id": 9,
+			"title": "Star Wars - Rise of Skywalker",
+			"thumbnail": "images/koalabear.jpg",
+			"poster": "images/newhope.jpg",
+			"video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+
+		},
+		{
+			"id": 10,
+			"title": "Star Wars - Solo",
+			"thumbnail": "images/koalabear.jpg",
+			"poster": "images/empire.jpg",
+			"video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+
+		},
+		{
+			"id": 11,
+			"title": "Star Wars - Rogue One",
+			"thumbnail": "images/koalabear.jpg",
+			"poster": "images/newhope.jpg",
+			"video": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+
+		}
+	]
+}

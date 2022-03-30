@@ -1,0 +1,17 @@
+{
+    "appSettings": {
+      "stage": {
+        "clearColor": "0x00000000",
+        "useImageWorker": true,
+        "w": 1280,
+        "h": 720
+      },
+      "debug": false
+    },
+    "platformSettings": {
+      "path": "./",
+      "log": true,
+      "showVersion": true
+    }
+  }
+  

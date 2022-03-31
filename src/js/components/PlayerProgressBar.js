@@ -73,11 +73,13 @@ export default class PlayerProgressBar extends Lightning.Component
 
 			class ScrubbingState extends this
 			{
+				// capture all key input to make sure the user doesn't leave before they're done scrubbing
 				_handleKey()
 				{
 					return true;
 				}
 
+				// leave scrubbing state once they press enter
 				_handleEnter()
 				{
 					this._setState('IdleState');
@@ -102,6 +104,8 @@ export default class PlayerProgressBar extends Lightning.Component
 						VideoPlayer.pause();
 					
 					this.tag('ScrubberHandle').patch({ visible: true });
+
+					this.fireAncestors('$lockPlayerOverlay', true);
 				}
 
 				$exit()
@@ -109,6 +113,8 @@ export default class PlayerProgressBar extends Lightning.Component
 					VideoPlayer.play();
 
 					this.tag('ScrubberHandle').patch({ visible: false });
+
+					this.fireAncestors('$lockPlayerOverlay', false);
 				}
 			}
 		]

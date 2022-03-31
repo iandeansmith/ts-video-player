@@ -41,7 +41,6 @@ class MoviesState extends StateObject<VideoPlayerState>
     // replace the current list of movies
     setMovieList(list:Array<MovieInfo>)
     {
-        var vps:VideoPlayerState = this._state;
         var ids: Array<number> = [];
         var movies: Record<number, MovieInfo> = {};
     

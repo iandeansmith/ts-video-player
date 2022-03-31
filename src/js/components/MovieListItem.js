@@ -8,6 +8,7 @@ export default class MovieListItem extends Lightning.Component
 	static _template()
 	{
 		return {
+		
 			transitions: {
 				scale: { duration: 0.5 },
 			},
@@ -20,6 +21,7 @@ export default class MovieListItem extends Lightning.Component
 				h: h => h,
 				color: 0xFFCCCCCC,
 			},
+
 
 			Thumbnail: {
 				//texture: Img(Utils.asset('images/koalabear.jpg')).cover(400, 250),
@@ -72,7 +74,7 @@ export default class MovieListItem extends Lightning.Component
 		this.patch({ 
 			smooth: { scale: 1.05 },
 		});
-		this.tag('BG').patch({ color: 0xFFFF00FF });
+		//this.tag('BG').patch({ color: 0xFFFF00FF });
 		this.tag('Cover').patch({ smooth: { colorBottom: 0xFF000000 } });
 
 		// set selected video
@@ -85,7 +87,7 @@ export default class MovieListItem extends Lightning.Component
 		this.patch({ 
 			smooth: { scale: 1.0 },
 		});
-		this.tag('BG').patch({ color: 0xFFCCCCCC });
+		//this.tag('BG').patch({ color: 0xFFCCCCCC });
 		this.tag('Cover').patch({ smooth: { colorBottom: 0x99000000 } });
 	}
 

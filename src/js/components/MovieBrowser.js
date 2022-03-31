@@ -22,7 +22,7 @@ export default class MovieBrowser extends Lightning.Component
 			BG: {
 				rect: true,
 				x: 0, y: 0, w: StageSize.width, h: StageSize.height,
-				color: 0xFFEFEFEF,
+				color: 0xFF000000,
 			},
 
 			CurrentMovie: {

@@ -3,6 +3,7 @@ import { Lightning, Router, VideoPlayer, Registry } from "@lightningjs/sdk";
 
 import PlayerButton from "./PlayerButton";
 import PlayerControls from "./PlayerControls";
+import LoadingSpinner from './LoadingSpinner';
 import { StageSize } from './const';
 import { PB_ICON_CLOSE } from "./PlayerButton";
 
@@ -56,6 +57,26 @@ export default class MoviePlayer extends Lightning.Component
                     w: CONTROLS_WIDTH,
                     h: 100
                 },
+            },
+
+            LoadingCover: {
+                x: 0,
+                y: 0,
+                w: StageSize.width,
+                h: StageSize.height,
+                visible: false,
+                color: 0x7F000000,
+                rect: true,
+
+                flex: {
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                },
+
+                Spinner: {
+                    type: LoadingSpinner,
+                    size: 50,
+                }
             }
         }
     }
@@ -71,6 +92,12 @@ export default class MoviePlayer extends Lightning.Component
         VideoPlayer.open(this.movie.video);
     }
 
+    _setWaiting(flag)
+    {
+        this.waiting = flag;
+        this.tag('LoadingCover').patch({ visible: this.waiting });
+    }
+
     _init()
     {
         // the index of the overlay child that is currently in focus
@@ -84,11 +111,17 @@ export default class MoviePlayer extends Lightning.Component
 
         // timeout id used to hide the overlay after X amount of seconds
         this.hideOverlayTimeout = 0;
+
+        // stalled/waiting for data?
+        this.waiting = false;
     }
 
     _getFocused()
     {
-        return this.overlayActive ? this.tag('Overlay').children[this.focusedChild] : this;
+        if (this.waiting)
+            return null;
+        else
+            return this.overlayActive ? this.tag('Overlay').children[this.focusedChild] : this;
     }
 
     _firstActive()
@@ -216,5 +249,15 @@ export default class MoviePlayer extends Lightning.Component
     {
         var percent = VideoPlayer.currentTime / VideoPlayer.duration;
         this.tag('Controls').setProgress(percent);
+    }
+
+    $videoPlayerWaiting()
+    {
+        this._setWaiting(true);
+    }
+
+    $videoPlayerCanPlay()
+    {
+        this._setWaiting(false);
     }
 }

@@ -22,13 +22,12 @@ export default class MovieListItem extends Lightning.Component
 				color: 0xFFCCCCCC,
 			},
 
-
 			Thumbnail: {
 				//texture: Img(Utils.asset('images/koalabear.jpg')).cover(400, 250),
 				x: 0,
 				y: 0,
 				w: w => w,
-				h: h => h, 
+				h: h => h,
 			},
 
 			Cover: {
@@ -66,6 +65,8 @@ export default class MovieListItem extends Lightning.Component
 		});
 
 		this.tag('Thumbnail').patch({ texture });
+
+		//this.tag('Thumbnail').patch({ src: this.info.thumbnail });
 	}
 
 	_focus()

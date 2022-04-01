@@ -5,6 +5,7 @@ import axios from "axios";
 import { store } from '../store';
 
 import MovieList from './MovieList';
+import CoverFlow from "./CoverFlow";
 import CurrentMoviePoster from "./CurrentMoviePoster";
 import { StageSize } from './const';
 
@@ -22,7 +23,7 @@ export default class MovieBrowser extends Lightning.Component
 			BG: {
 				rect: true,
 				x: 0, y: 0, w: StageSize.width, h: StageSize.height,
-				color: 0xFF000000,
+				color: 0xFFCCCCCC,
 			},
 
 			CurrentMovie: {
@@ -31,10 +32,9 @@ export default class MovieBrowser extends Lightning.Component
 			},
 
 			Movies: {
-				type: MovieList,
-				show: false,
-				x: 20, y: 20, w: StageSize.width - 40, h: 190,
-				movies: [],
+				type: CoverFlow,
+				x: 0, y: 50, w: StageSize.width, h: 400,
+				itemWidth: StageSize.width / 5,
 			},
 		}
 	}
@@ -42,6 +42,20 @@ export default class MovieBrowser extends Lightning.Component
 	_getFocused()
 	{
 		return this.tag('Movies');
+	}
+
+	_enable()
+	{
+		this.unsubFromStore = store.subscribe('movieList', (state) => {
+			var movies = state.movieIds.map(id => state.movies[id]);
+			this.tag('Movies').setMovies(movies);
+		});
+	}
+
+	_disable()
+	{
+		if (this.unsubFromStore)
+			this.unsubFromStore();
 	}
 
 	async _init()

@@ -66,7 +66,8 @@ export default class MovieList extends Lightning.Component
 	_enable()
 	{
 		this.unsubFromStore = store.subscribe('movieList', (state) => {
-			this.setMovies(store.movieList());
+			var movies = state.movieIds.map(id => state.movies[id]);
+			this.setMovies(movies);
 		});
 	}
 

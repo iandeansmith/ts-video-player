@@ -8,3 +8,4 @@ export function clamp(val, min, max)
     else 
         return val;
 }
+

@@ -18,7 +18,7 @@ export default class MoviePlayer extends Lightning.Component
     {
         return {
             Overlay: {
-                alpha: 0,
+                alpha: 1,
                 x: 0,
                 y: 0,
                 w: w => w,
@@ -247,8 +247,7 @@ export default class MoviePlayer extends Lightning.Component
 
     $videoPlayerTimeUpdate()
     {
-        var percent = VideoPlayer.currentTime / VideoPlayer.duration;
-        this.tag('Controls').setProgress(percent);
+        this.tag('Controls').setProgress(VideoPlayer.currentTime, VideoPlayer.duration);
     }
 
     $videoPlayerWaiting()

@@ -1,5 +1,6 @@
 
 import { Lightning, VideoPlayer } from "@lightningjs/sdk";
+import { formatSecondsIntoTime } from '../utils/time';
 
 const { Tools } = Lightning;
 
@@ -23,39 +24,77 @@ export default class PlayerProgressBar extends Lightning.Component
 				y: 0,
 				w: COMP_WIDTH,
 				h: COMP_HEIGHT,
+				
 				transition: {
 					color: { duration: 0.5 },
-				}
-			},
-
-			ScrubberBG: {
-				x: 20,
-				y: 40,
-				w: SCRUB_WIDTH,
-				h: SCRUB_HEIGHT,
-				texture: Tools.getRoundRect(SCRUB_WIDTH, SCRUB_HEIGHT, 10, 0, 0, true, 0x7FFFFFFF),
-			},
-
-			ProgressArea: {
-				clipping: true,
-				x: 20,
-				y: 40,
-				w: 0,
-				h: SCRUB_HEIGHT,
-				ScrubberProgress: {
+				},
+				
+				ScrubberBG: {
+					rect: true,
+					color: 0x7FFFFFFF,
+					x: 20,
+					y: 40,
 					w: SCRUB_WIDTH,
 					h: SCRUB_HEIGHT,
-					texture: Tools.getRoundRect(SCRUB_WIDTH, SCRUB_HEIGHT, 10, 0, 0, true, 0xFFFFFFFF),
+					shader: {
+						type: Lightning.shaders.RoundedRectangle,
+						radius: 10,
+					}
 				},
-			},
 
-			ScrubberHandle: {
-				visible: false,
-				x: 5,
-				y: 35,
-				w: 30,
-				h: 30,
-				texture: Tools.getRoundRect(30, 30, 15, 0, 0, true, 0xFF82de37),
+				ProgressArea: {
+					clipping: true,
+					x: 20,
+					y: 40,
+					w: 0,
+					h: SCRUB_HEIGHT,
+					ScrubberProgress: {
+						rect: true,
+						color: 0xFFFFFFFF,
+						w: SCRUB_WIDTH,
+						h: SCRUB_HEIGHT,
+						shader: {
+							type: Lightning.shaders.RoundedRectangle,
+							radius: 10,
+						}
+					},
+				},
+
+				ScrubberHandle: {
+					rect: true,
+					color: 0xFF82de37,
+					visible: false,
+					x: 5,
+					y: 35,
+					w: 30,
+					h: 30,
+					shader: {
+						type: Lightning.shaders.RoundedRectangle,
+						radius: 15,
+					}
+				},
+
+				CurrentTime: {
+					x: 20,
+					y: 20,
+					text: {
+						text: '99:99:99',
+						textColor: 0x7FFFFFFF,
+						fontSize: 16,
+					}
+				},
+
+				TotalTime: {
+					x: COMP_WIDTH - 120,
+					y: 20,
+					w: 100,
+					text: {
+						text: '99:99:99',
+						textAlign: 'right',
+						textColor: 0x7FFFFFFF,
+						fontSize: 16,
+					}
+				},
 			},
 		}
 	}
@@ -120,13 +159,27 @@ export default class PlayerProgressBar extends Lightning.Component
 		]
 	}
 
-	setProgress(value)
+	setProgress(current, duration)
 	{
+		var value = current / duration;
 		var size = SCRUB_WIDTH * value;
 		var pos = size + 5;
+		var currentTime = formatSecondsIntoTime(current);
+		var totalTime = formatSecondsIntoTime(duration);
+
 
 		this.tag('ProgressArea').patch({ w: size });
 		this.tag('ScrubberHandle').patch({ x: pos });
+		this.tag('CurrentTime').patch({ 
+			text: {
+				text: currentTime,
+			}
+		});
+		this.tag('TotalTime').patch({ 
+			text: {
+				text: totalTime,
+			}
+		});
 	}
 
 	_init()

@@ -61,9 +61,9 @@ export default class PlayerControls extends Lightning.Component
 		}
 	}
 
-	setProgress(value)
+	setProgress(current, duration)
 	{
-		this.tag('Progress').setProgress(value);
+		this.tag('Progress').setProgress(current, duration);
 	}
 
 	_init()

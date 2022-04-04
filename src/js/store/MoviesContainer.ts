@@ -23,23 +23,23 @@ export default new StateContainer<MoviesState>({
         selectedMovie: null,
     },
     actions: {
-        setMovieList(state:MoviesState, payload:any)
+        setMovieList(container, state, payload)
         {
             let { list } = payload;
             for(var obj of list)
                 state.movies[obj.id] = obj;
 
-            this.broadcastSignal('movieListUpdated');
+            container.broadcastSignal('movieListUpdated');
         },
 
-        setSelectedMovie(state:MoviesState, payload:any)
+        setSelectedMovie(container, state, payload)
         {
             let { id } = payload;
 
             if (state.movies[id] !== undefined)
                 state.selectedMovie = state.movies[id];
 
-            this.broadcastSignal('movieSelected');
+            container.broadcastSignal('movieSelected');
         },
     }
 });

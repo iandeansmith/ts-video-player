@@ -1,13 +1,15 @@
 import StateDataReader from "./StateDataReader";
 
 type SignalHandler<StateType> = (state: StateDataReader<StateType>) => void;
-type ActionFunction<StateType> = (state: StateType, payload: any) => void;
+type ActionFunction<StateType> = (container: StateContainer<StateType>, state: StateType, payload: any) => void;
+type MiddlewareFunction<StateType> = (container: StateContainer<StateType>, next: MiddlewareFunction<StateType>) => void;
 
 interface StateContainerParams<StateType>
 {
     initialState: StateType;
     signals: Array<string>;
     actions: Record<string, ActionFunction<StateType>>;
+    middleware?: Array<MiddlewareFunction<StateType>>;
 }
 
 export default class StateContainer<StateType>
@@ -17,6 +19,7 @@ export default class StateContainer<StateType>
     private _validSignals: Array<string>;
     private _signalHandlers: Record<string, Array<SignalHandler<StateType>>> = {};
     private _actions: Record<string, ActionFunction<StateType>>;
+    private _middleware: Array<MiddlewareFunction<StateType>>;
 
     constructor(args: StateContainerParams<StateType>)
     {
@@ -31,6 +34,9 @@ export default class StateContainer<StateType>
 
         // add actions
         this._actions = { ...args.actions };
+
+        // add middleware
+        this._middleware = args.middleware || [];
     }
 
     // broadcast a signal
@@ -86,6 +92,6 @@ export default class StateContainer<StateType>
         }
 
         // otherwise execute it now
-        actionFunc.call(this, this.state, payload);
+        actionFunc(this, this.state, payload);
     }
 }

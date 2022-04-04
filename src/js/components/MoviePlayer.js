@@ -7,7 +7,8 @@ import LoadingSpinner from './LoadingSpinner';
 import { StageSize } from './const';
 import { PB_ICON_CLOSE } from "./PlayerButton";
 
-import { store } from '../store';
+//import { store } from '../store';
+import MoviesContainer from "../store/MoviesContainer";
 
 const CONTROLS_WIDTH = 900;
 const OVERLAY_TIMEOUT = 5000;
@@ -88,7 +89,8 @@ export default class MoviePlayer extends Lightning.Component
 
     _startMovie()
     {
-        this.movie = store.state.selectedMovie;
+        //this.movie = store.state.selectedMovie;
+        this.movie = MoviesContainer.getState().selectedMovie;
         VideoPlayer.open(this.movie.video);
     }
 

@@ -3,7 +3,8 @@ import { Lightning, Router } from '@lightningjs/sdk';
 
 import CoverFlowItem from './CoverFlowItem';
 
-import { store } from '../store';
+//import { store } from '../store';
+import MoviesContainer from '../store/MoviesContainer';
 
 export default class CoverFlow extends Lightning.Component
 {
@@ -53,7 +54,8 @@ export default class CoverFlow extends Lightning.Component
         }
 
         // set specified movie
-        store.setSelectedMovie(this._movies[this._currentIndex].id);
+        //store.setSelectedMovie(this._movies[this._currentIndex].id);
+        MoviesContainer.dispatch('setSelectedMovie', { id: this._movies[this._currentIndex].id });
     }
 
     _handleLeft()

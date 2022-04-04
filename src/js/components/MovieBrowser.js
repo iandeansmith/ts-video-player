@@ -2,13 +2,13 @@
 import { Lightning, Utils } from "@lightningjs/sdk";
 import axios from "axios";
 
-import { store } from '../store';
+//import { store } from '../store';
+import MoviesContainer from '../store/MoviesContainer';
 
 import MovieList from './MovieList';
 import CoverFlow from "./CoverFlow";
 import CurrentMoviePoster from "./CurrentMoviePoster";
 import { StageSize } from './const';
-
 
 export default class MovieBrowser extends Lightning.Component
 {
@@ -46,8 +46,9 @@ export default class MovieBrowser extends Lightning.Component
 
 	_enable()
 	{
-		this.unsubFromStore = store.subscribe('movieList', (state) => {
-			var movies = state.movieIds.map(id => state.movies[id]);
+		//this.unsubFromStore = store.subscribe('movieList', (state) => {
+		this.unsubFromStore = MoviesContainer.subscribe('movieListUpdated', (state) => {
+			var movies = Object.values(state.movies);
 			this.tag('Movies').setMovies(movies);
 		});
 	}
@@ -66,7 +67,7 @@ export default class MovieBrowser extends Lightning.Component
 			var result = await axios.get(Utils.asset('movies.json'));
 
 			//store.dispatch(setMovieList(result.data.movies));
-			store.setMovieList(result.data.movies);
+			MoviesContainer.dispatch('setMovieList', { list: result.data.movies });
 		}
 		catch(err)
 		{

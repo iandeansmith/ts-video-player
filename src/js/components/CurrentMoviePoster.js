@@ -1,7 +1,8 @@
 
 import { Img, Lightning, Utils, Colors } from "@lightningjs/sdk";
 
-import { store } from '../store';
+//import { store } from '../store';
+import MoviesContainer from "../store/MoviesContainer";
 import { StageSize } from "./const";
 
 export default class CurrentMoviePoster extends Lightning.Component
@@ -134,7 +135,8 @@ export default class CurrentMoviePoster extends Lightning.Component
     _enable()
     {
         // respond to state changes
-        this.unsubStore = store.subscribe('selectedMovie', (state) => {
+        //this.unsubStore = store.subscribe('selectedMovie', (state) => {
+        this.unsubStore = MoviesContainer.subscribe('movieSelected', (state) => {
             this._setMovie(state.selectedMovie);
         });
     }

@@ -3,6 +3,14 @@ import StateDataReader from "./StateDataReader";
 type SignalHandler<StateType> = (state: StateDataReader<StateType>) => void;
 type ActionFunction<StateType> = (container: StateContainer<StateType>, state: StateType, payload: any) => void;
 type MiddlewareFunction<StateType> = (container: StateContainer<StateType>, next: MiddlewareFunction<StateType>) => void;
+type SequenceMethod<StateType> = (prevResult:any, context: SequenceContext<StateType>) => void;
+
+interface SequenceContext<StateType>
+{
+    container: StateContainer<StateType>;
+    payload: any;
+    next: (error:any, result:any, params:SequenceContext<StateType>) => void;    
+}
 
 interface StateContainerParams<StateType>
 {
@@ -10,6 +18,7 @@ interface StateContainerParams<StateType>
     signals: Array<string>;
     actions: Record<string, ActionFunction<StateType>>;
     middleware?: Array<MiddlewareFunction<StateType>>;
+    sequences?: Record<string, Array<SequenceMethod<StateType>>>;
 }
 
 export default class StateContainer<StateType>
@@ -19,7 +28,7 @@ export default class StateContainer<StateType>
     private _validSignals: Array<string>;
     private _signalHandlers: Record<string, Array<SignalHandler<StateType>>> = {};
     private _actions: Record<string, ActionFunction<StateType>>;
-    private _middleware: Array<MiddlewareFunction<StateType>>;
+    private _sequences: Record<string, Array<SequenceMethod<StateType>>>;
 
     constructor(args: StateContainerParams<StateType>)
     {
@@ -35,8 +44,8 @@ export default class StateContainer<StateType>
         // add actions
         this._actions = { ...args.actions };
 
-        // add middleware
-        this._middleware = args.middleware || [];
+        // add sequences
+        this._sequences = { ...args.sequences };
     }
 
     // broadcast a signal
@@ -93,5 +102,32 @@ export default class StateContainer<StateType>
 
         // otherwise execute it now
         actionFunc(this, this.state, payload);
+    }
+
+    // execute sequence
+    async runSequence(sequenceName: string, payload: any)
+    {
+        let lastResult = null;
+        const sequence = this._sequences[sequenceName];
+        const context:SequenceContext<StateType> = {
+            container: this,
+            payload,
+            next: (error, result, { container }) => {
+            }
+        };
+
+        // do nothing if the sequence is not defined
+        if (sequence == undefined)
+        {
+            console.error(`StateContainer: undefined sequence: ${sequenceName}`);
+            return;
+        }
+
+        // execute each sequence function
+        for(let i=0; i<sequence.length; i++)
+        {
+            let func = sequence[i];
+            lastResult = await func(lastResult, context);
+        }
     }
 }

@@ -145,6 +145,7 @@ export default class MoviePlayer extends Lightning.Component
     _enable()
     {
         this._startMovie();
+        this._disableOverlay();
     }
 
     _disable()
@@ -152,39 +153,34 @@ export default class MoviePlayer extends Lightning.Component
         VideoPlayer.clear();
     }
 
-    _activateOverlay()
+    _activateOverlay(paused)
     {
-        if (!this.overlayActive)
-        {
-            // display overlay
-            this.overlayActive = true;
-            this.tag('Overlay').transition('alpha').stop();
-            this.tag('Overlay').patch({
-                visible: true,
-                alpha: 1,
-            });
+        // display overlay
+        this.overlayActive = true;
+        this.tag('Overlay').transition('alpha').stop();
+        this.tag('Overlay').patch({
+            visible: true,
+            alpha: 1,
+        });
 
-            // kill previous time out if present
-            if (this.hideOverlayTimeout)
-                Registry.clearTimeout(this.hideOverlayTimeout);
+        // kill previous time out if present
+        if (this.hideOverlayTimeout)
+            Registry.clearTimeout(this.hideOverlayTimeout);
 
-            // disable overlay after X amount of seconds
+        // disable overlay after X amount of seconds 
+        if (!paused)
             this.hideOverlayTimeout = Registry.setTimeout(() => this._disableOverlay(), OVERLAY_TIMEOUT);
-        }
     }
 
     _disableOverlay()
     {
-        if (this.overlayActive)
-        {
-            // hide overlay
-            this.overlayActive = false;
-            this.tag('Overlay').setSmooth('alpha', 0);
+        // hide overlay
+        this.overlayActive = false;
+        this.tag('Overlay').setSmooth('alpha', 0);
 
-            // clear timeout
-            Registry.clearTimeout(this.hideOverlayTimeout);
-            this.hideOverlayTimeout = 0;            
-        }
+        // clear timeout
+        Registry.clearTimeout(this.hideOverlayTimeout);
+        this.hideOverlayTimeout = 0;            
     }
 
     _captureKey()
@@ -240,11 +236,13 @@ export default class MoviePlayer extends Lightning.Component
     $videoPlayerPause()
     {
         this.tag('Controls').setPlaying(false);
+        this._activateOverlay(true);
     }
 
     $videoPlayerPlaying()
     {
         this.tag('Controls').setPlaying(true);
+        this._disableOverlay();
     }
 
     $videoPlayerTimeUpdate()

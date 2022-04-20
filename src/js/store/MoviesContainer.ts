@@ -1,4 +1,5 @@
 
+import { container } from 'webpack';
 import StateContainer from '../state/StateContainer';
 
 interface MovieInfo
@@ -41,5 +42,5 @@ export default new StateContainer<MoviesState>({
 
             container.broadcastSignal('movieSelected');
         },
-    }
+    },
 });

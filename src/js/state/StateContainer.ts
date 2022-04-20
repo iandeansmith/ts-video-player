@@ -3,14 +3,8 @@ import StateDataReader from "./StateDataReader";
 type SignalHandler<StateType> = (state: StateDataReader<StateType>) => void;
 type ActionFunction<StateType> = (container: StateContainer<StateType>, state: StateType, payload: any) => void;
 type MiddlewareFunction<StateType> = (container: StateContainer<StateType>, next: MiddlewareFunction<StateType>) => void;
-type SequenceMethod<StateType> = (prevResult:any, context: SequenceContext<StateType>) => void;
+type SequenceMethod<StateType> = (prevResult:any, container: StateContainer<StateType>) => any;
 
-interface SequenceContext<StateType>
-{
-    container: StateContainer<StateType>;
-    payload: any;
-    next: (error:any, result:any, params:SequenceContext<StateType>) => void;    
-}
 
 interface StateContainerParams<StateType>
 {
@@ -107,14 +101,8 @@ export default class StateContainer<StateType>
     // execute sequence
     async runSequence(sequenceName: string, payload: any)
     {
-        let lastResult = null;
+        let lastResult = payload;
         const sequence = this._sequences[sequenceName];
-        const context:SequenceContext<StateType> = {
-            container: this,
-            payload,
-            next: (error, result, { container }) => {
-            }
-        };
 
         // do nothing if the sequence is not defined
         if (sequence == undefined)
@@ -123,11 +111,7 @@ export default class StateContainer<StateType>
             return;
         }
 
-        // execute each sequence function
-        for(let i=0; i<sequence.length; i++)
-        {
-            let func = sequence[i];
-            lastResult = await func(lastResult, context);
-        }
+        for(var func of sequence)
+            await func.call(null, lastResult, this);
     }
 }

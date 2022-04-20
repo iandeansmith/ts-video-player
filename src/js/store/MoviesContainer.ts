@@ -1,5 +1,8 @@
 
+import axios from 'axios';
+import { Utils } from '@lightningjs/sdk';
 import { container } from 'webpack';
+
 import StateContainer from '../state/StateContainer';
 
 interface MovieInfo
@@ -14,6 +17,7 @@ interface MovieInfo
 interface MoviesState 
 {
     movies: Record<number, MovieInfo>;
+    moviesLoading: boolean;
     selectedMovie: MovieInfo;
 }
 
@@ -21,6 +25,7 @@ export default new StateContainer<MoviesState>({
     signals: ['movieSelected', 'movieListUpdated'],
     initialState: {
         movies: {},
+        moviesLoading: false,
         selectedMovie: null,
     },
     actions: {
@@ -43,4 +48,10 @@ export default new StateContainer<MoviesState>({
             container.broadcastSignal('movieSelected');
         },
     },
+    sequences: {
+        loadMovies: [
+            async (last, container) => await axios.get(Utils.asset('movies.json')),
+            async (resp, container) => container.dispatch('setMovieList', resp.data.movies),
+        ],
+    }
 });
